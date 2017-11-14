@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Login and Registration</title>
+</head>
+<body>
+	<h1>Login</h1>
+	<% if(logerror){ %>
+		<%= logerror %>
+	<% } %>
+	<form action="/login" method="post">
+		<label>Email:</label>
+		<input type="text" name="email">
+		<label>Password:</label>
+		<input type="password" name="password">
+		<input type="submit" value="Login">
+	</form>
+	<h1>Registration</h1>
+	<% if(regerror){ %>
+		<% for(field in regerror.errors){ %>
+			<p><%= regerror.errors[field].message %></p>
+		<% } %>
+		<% if(regerror.op){ %>
+			<p><%= regerror.op.email %> is already registered</p>
+		<% } %>
+		<p><%= regerror.getOperation().email %> is already registered</p>
+	<% } %>
+	<p id="match"></p>
+	<form id="register" action="/register" method="post">
+		<label>Email:</label>
+		<input type="text" name="email" value="<%= user.email %>">
+		<label>First Name:</label>
+		<input type="text" name="first_name" value="<%= user.first_name %>">
+		<label>Last Name:</label>
+		<input type="text" name="last_name" value="<%= user.last_name %>">
+		<label>Password:</label>
+		<input type="password" name="password" id="password">
+		<label>Password Confirmation:</label>
+		<input type="password" name="password_confirm" id="password_confirm">
+		<label>Birthday:</label>
+		<input type="date" name="birthday" value="<%= user.birthday %>">
+		<input type="submit" value="Register">
+	</form>
+	<script>
+		var reg=document.getElementById("register");
+		var pass=document.getElementById("password");
+		var conf=document.getElementById("password_confirm");
+		var match=document.getElementById("match");
+		reg.addEventListener("submit", function(e){
+			if(pass.value!=conf.value){
+				e.preventDefault();
+				match.innerHTML="Password does not match password confirmation";
+			}
+		})
+	</script>
+</body>
+</html>
